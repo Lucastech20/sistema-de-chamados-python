@@ -1,45 +1,78 @@
+from datetime import datetime
+
 def main():
+
     print("--- SISTEMA DE CHAMADOS | HELPDESK ---")
 
-    # 1. Coleta de dados básicos do usuário
-    solicitante = input("Digite o seu nome: ").strip()
-    setor = input("Digite o seu setor: ").strip()
+    solicitante = input("Digite o seu nome: ")
+    setor = input("Digite o setor solicitante: ")
 
-    # 2. Definição das opções de problemas (como strings textuais)
-    opcoes_problema = ["Hardware", "Software", "Redes e Internet", "Acessos e Permissões"]
+    total_chamados = 0
+    op = ""
+    sair = "nao"
 
-    # 3. Exibição das opções para o usuário escolher por número
-    print("\nSelecione o tipo de problema:")
-    for indice, tipo in enumerate(opcoes_problema, start=1):
-        print(f"[{indice}] - {tipo}")
+    while op != "7" and sair == "nao":
+        print("\n======================")
+        print("SELECIONE SUA OPÇÃO:")
+        print("1 - Hardware")
+        print("2 - Software")
+        print("3 - Redes e Internet")
+        print("4 - Acesso e Permissões")
+        print("5 - Outros")
+        print("6 - Solicitar novamente os dados")
+        print("7 - Sair")
+        print("======================")
 
-    # 4. Captura e validação da escolha do usuário
-    try:
-        escolha = int(input("\nDigite o número da opção desejada: "))
-        # Ajusta o índice (ex: se o usuário digitar 1, pegamos o índice 0 da lista)
-        tipo_selecionado = opcoes_problema[escolha - 1]
-    except (ValueError, IndexError):
-        print("Opção inválida! O chamado será categorizado como 'Outros'.")
-        tipo_selecionado = "Outros"
+        op = input("Digite sua opção: ")
 
-    descricao = input("Descreva brevemente o problema: ").strip()
+        if op == "1":
+            categoria = "Hardware"
+        elif op == "2":
+            categoria = "Software"
+        elif op == "3":
+            categoria = "Redes e Internet"
+        elif op == "4":
+            categoria = "Acesso e Permissões"
+        elif op == "5":
+            categoria = "Outros"
+        else:
+            categoria = ""
 
-    # 5. Agrupando todas as variáveis do chamado em um Dicionário
-    # Isso organiza os dados e facilita para salvar em arquivos depois!
-    chamado = {
-        "solicitante": solicitante,
-        "setor": setor,
-        "categoria": tipo_selecionado,
-        "descricao": descricao,
-        "status": "Aberto"
-    }
+        if categoria != "":
+            descricao = input("Descreva brevemente o problema: ")
+            total_chamados = total_chamados + 1
+            data_abertura = datetime.now().strftime("%d/%m/%Y %H:%M")
 
-    # Exibe o chamado final na tela para o usuário ver
-    print("\n--- Chamado Registrado com Sucesso! ---")
-    print(f"Solicitante: {chamado['solicitante']} ({chamado['setor']})")
-    print(f"Categoria: {chamado['categoria']}")
-    print(f"Descrição: {chamado['descricao']}")
-    print(f"Status: {chamado['status']}")
+            print("\n--- Chamado Registrado com Sucesso! ---")
+            print("Solicitante:", solicitante, "(" + setor + ")")
+            print("Categoria:", categoria)
+            print("Descrição:", descricao)
+            print("Aberto em:", data_abertura)
+            print("Status: Aberto")
+
+            while True:
+                continua = input("\nDeseja abrir outro chamado (s/n)? ").upper()
+                if continua == "S" or continua == "SIM":
+                    break
+                elif continua == "N" or continua == "NAO" or continua == "NÃO":
+                    sair = "sim"
+                    op = "7"
+                    break
+                else:
+                    print("Entrada inválida! Responda S ou N.")
+
+        elif op == "6":
+            solicitante = input("Digite o seu nome: ")
+            setor = input("Digite o setor solicitante: ")
+
+        elif op == "7":
+            pass
+
+        else:
+            print("Opção inválida! Digite um número de 1 a 7.")
+
+    print("\nFIM DO PROGRAMA!")
+    print("Chamados abertos:", total_chamados)
 
 
 if __name__ == "__main__":
